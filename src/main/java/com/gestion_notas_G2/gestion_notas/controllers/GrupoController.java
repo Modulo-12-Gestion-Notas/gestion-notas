@@ -1,13 +1,19 @@
 package com.gestion_notas_G2.gestion_notas.controllers;
 
+import com.gestion_notas_G2.gestion_notas.dto.ActividadEvaluativaSimpleDTO;
+import com.gestion_notas_G2.gestion_notas.dto.EstudianteDTO;
+import com.gestion_notas_G2.gestion_notas.dto.GrupoSimpleDTO;
+import com.gestion_notas_G2.gestion_notas.dto.ProfesorDTO;
 import com.gestion_notas_G2.gestion_notas.models.Grupo;
+import com.gestion_notas_G2.gestion_notas.response.GrupoEstudianteListAndActividadEvaluativaListResponse;
+import com.gestion_notas_G2.gestion_notas.services.ActividadEvaluativaService;
 import com.gestion_notas_G2.gestion_notas.services.GrupoService;
+import com.gestion_notas_G2.gestion_notas.services.MatriculaService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +23,14 @@ import java.util.List;
 public class GrupoController {
 
     private GrupoService grupoService;
-    public GrupoController(GrupoService grupoService){
+    private MatriculaService matriculaService;
+
+    private ActividadEvaluativaService actividadEvaluativaService;
+
+    public GrupoController(GrupoService grupoService, MatriculaService matriculaService, ActividadEvaluativaService actividadEvaluativaService){
        this.grupoService = grupoService;
+       this.matriculaService = matriculaService;
+       this.actividadEvaluativaService = actividadEvaluativaService;
     }
 
 
@@ -39,6 +51,27 @@ public class GrupoController {
         try {
             List<Grupo> grupos = grupoService.getGruposByProfesor(idProfesor);
             return new ResponseEntity<>(grupos, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("api/{codigoGrupo}/evaluacion/estudiantes")
+    public ResponseEntity<Object> getEstudianteListAndActividaEvaluativaListByGrupo(@PathVariable Long codigoGrupo){
+        try {
+            List<EstudianteDTO> estudianteDTOList = this.matriculaService.getEstudieantesByGrupo(codigoGrupo);
+            ProfesorDTO profesorDTO = this.grupoService.getProfesorByGrupo(codigoGrupo);
+            GrupoSimpleDTO grupoSimpleDTO = this.grupoService.getGrupoByCodigoGrupo(codigoGrupo);
+            List<ActividadEvaluativaSimpleDTO> actividadEvaluativaSimpleDTOList = this.actividadEvaluativaService.getActividadEvaluativaSimpleDTO(codigoGrupo);
+
+            GrupoEstudianteListAndActividadEvaluativaListResponse grupoEstudianteListAndActividadEvaluativaListResponse = new GrupoEstudianteListAndActividadEvaluativaListResponse();
+            grupoEstudianteListAndActividadEvaluativaListResponse.setEstudianteList(estudianteDTOList);
+            grupoEstudianteListAndActividadEvaluativaListResponse.setProfesor(profesorDTO);
+            grupoEstudianteListAndActividadEvaluativaListResponse.setGrupo(grupoSimpleDTO);
+            grupoEstudianteListAndActividadEvaluativaListResponse.setActividadEvaluativaList(actividadEvaluativaSimpleDTOList);
+
+            return new ResponseEntity<>(grupoEstudianteListAndActividadEvaluativaListResponse, HttpStatus.OK);
+
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }

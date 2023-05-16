@@ -1,18 +1,23 @@
 package com.gestion_notas_G2.gestion_notas.services;
 
+import com.gestion_notas_G2.gestion_notas.dto.ActividadEvaluativaSimpleDTO;
 import com.gestion_notas_G2.gestion_notas.models.ActividadEvaluativa;
 import com.gestion_notas_G2.gestion_notas.repositories.ActividadEvaluativaRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ActividadEvaluativaService {
     private ActividadEvaluativaRepository actividadEvaluativaRepository;
+    private ModelMapper modelMapper;
 
-    public ActividadEvaluativaService(ActividadEvaluativaRepository actividadEvaluativaRepository) {
+    public ActividadEvaluativaService(ActividadEvaluativaRepository actividadEvaluativaRepository, ModelMapper modelMapper) {
         this.actividadEvaluativaRepository = actividadEvaluativaRepository;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -71,5 +76,13 @@ public class ActividadEvaluativaService {
                 throw new Exception("Ha ocurrido un error al guardar los datos");
             }
         }
+    }
+
+    public List<ActividadEvaluativaSimpleDTO> getActividadEvaluativaSimpleDTO(Long codigoGrupo){
+        List<ActividadEvaluativa> actividadEvaluativaList = this.actividadEvaluativaRepository.findActividadEvaluativaByGrupo(codigoGrupo);
+
+        return actividadEvaluativaList.stream()
+                .map(actividadEvaluativa -> modelMapper.map(actividadEvaluativa, ActividadEvaluativaSimpleDTO.class))
+                .collect(Collectors.toList());
     }
 }

@@ -19,7 +19,7 @@ public class ActividadEvaluativa {
     private int porcentaje;
     @ManyToOne
     private Grupo grupo;
-    @OneToMany(mappedBy = "actividadEvaluativa")
+    @OneToMany(mappedBy = "actividadEvaluativa", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<NotaActividad> notaActividades;
 
