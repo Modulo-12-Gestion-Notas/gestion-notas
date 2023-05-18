@@ -29,7 +29,7 @@ public class MatriculaController {
 
 
     /**
-     * Obtiene la lista de estudiantes de un grupo.
+     * Obtiene la lista de estudiantes matriculados en un grupo.
      *
      * @param codigoGrupo El código del grupo del que se obtendrán los estudiantes.
      * @return Una respuesta que contiene la información del profesor, el grupo y la lista de estudiantes.
@@ -45,12 +45,10 @@ public class MatriculaController {
             List<EstudianteDTO> estudianteDTOList = this.matriculaService.getEstudieantesByGrupo(codigoGrupo);
             ProfesorDTO profesorDTO = this.grupoService.getProfesorByGrupo(codigoGrupo);
             GrupoSimpleDTO grupoSimpleDTO = this.grupoService.getGrupoByCodigoGrupo(codigoGrupo);
-
             GrupoEstudiantesResponse grupoEstudiantesResponse = new GrupoEstudiantesResponse();
             grupoEstudiantesResponse.setProfesor(profesorDTO);
             grupoEstudiantesResponse.setGrupo(grupoSimpleDTO);
             grupoEstudiantesResponse.setEstudianteList(estudianteDTOList);
-
             return new ResponseEntity<>(grupoEstudiantesResponse, HttpStatus.OK);
 
         }catch (Exception e){

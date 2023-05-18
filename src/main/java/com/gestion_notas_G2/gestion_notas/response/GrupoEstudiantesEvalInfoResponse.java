@@ -5,13 +5,9 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class GrupoEstudiantesResponse {
-
+public class GrupoEstudiantesEvalInfoResponse {
     private ProfesorDTO profesor;
-
     private GrupoSimpleDTO grupo;
-    private List<EstudianteDTO> estudianteList;
-
-    public GrupoEstudiantesResponse() {
-    }
+    private List<EstudianteConNotaActividadListDTO> estudiantes;
+    private List<ActividadEvaluativaSimpleDTO> evaluaciones;
 }

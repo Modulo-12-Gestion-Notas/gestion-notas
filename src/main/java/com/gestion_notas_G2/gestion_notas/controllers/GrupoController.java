@@ -1,11 +1,8 @@
 package com.gestion_notas_G2.gestion_notas.controllers;
 
-import com.gestion_notas_G2.gestion_notas.dto.ActividadEvaluativaSimpleDTO;
-import com.gestion_notas_G2.gestion_notas.dto.EstudianteDTO;
-import com.gestion_notas_G2.gestion_notas.dto.GrupoSimpleDTO;
-import com.gestion_notas_G2.gestion_notas.dto.ProfesorDTO;
+import com.gestion_notas_G2.gestion_notas.dto.*;
 import com.gestion_notas_G2.gestion_notas.models.Grupo;
-import com.gestion_notas_G2.gestion_notas.response.GrupoEstudianteListAndActividadEvaluativaListResponse;
+import com.gestion_notas_G2.gestion_notas.response.GrupoEstudiantesEvalInfoResponse;
 import com.gestion_notas_G2.gestion_notas.services.ActividadEvaluativaService;
 import com.gestion_notas_G2.gestion_notas.services.GrupoService;
 import com.gestion_notas_G2.gestion_notas.services.MatriculaService;
@@ -56,24 +53,30 @@ public class GrupoController {
         }
     }
 
+
+    /**
+     * Obtiene la información de estudiantes y evaluaciones de un grupo.
+     *
+     * @param codigoGrupo El código del grupo del que se obtendrá la información.
+     * @return Una ResponseEntity con la información de estudiantes y evaluaciones del grupo.
+     */
     @GetMapping("api/{codigoGrupo}/evaluacion/estudiantes")
-    public ResponseEntity<Object> getEstudianteListAndActividaEvaluativaListByGrupo(@PathVariable Long codigoGrupo){
+    @ApiOperation(value = "Obtiene la información de estudiantes y evaluaciones de un grupo",
+            response = GrupoEstudiantesEvalInfoResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = GrupoEstudiantesEvalInfoResponse.class),
+            @ApiResponse(code = 500, message = "Error interno del servidor")
+    })
+    public ResponseEntity<GrupoEstudiantesEvalInfoResponse> getEstudiantesEvalInfoByGrupo(@PathVariable Long codigoGrupo) {
         try {
-            List<EstudianteDTO> estudianteDTOList = this.matriculaService.getEstudieantesByGrupo(codigoGrupo);
-            ProfesorDTO profesorDTO = this.grupoService.getProfesorByGrupo(codigoGrupo);
-            GrupoSimpleDTO grupoSimpleDTO = this.grupoService.getGrupoByCodigoGrupo(codigoGrupo);
-            List<ActividadEvaluativaSimpleDTO> actividadEvaluativaSimpleDTOList = this.actividadEvaluativaService.getActividadEvaluativaSimpleDTO(codigoGrupo);
-
-            GrupoEstudianteListAndActividadEvaluativaListResponse grupoEstudianteListAndActividadEvaluativaListResponse = new GrupoEstudianteListAndActividadEvaluativaListResponse();
-            grupoEstudianteListAndActividadEvaluativaListResponse.setEstudianteList(estudianteDTOList);
-            grupoEstudianteListAndActividadEvaluativaListResponse.setProfesor(profesorDTO);
-            grupoEstudianteListAndActividadEvaluativaListResponse.setGrupo(grupoSimpleDTO);
-            grupoEstudianteListAndActividadEvaluativaListResponse.setActividadEvaluativaList(actividadEvaluativaSimpleDTOList);
-
-            return new ResponseEntity<>(grupoEstudianteListAndActividadEvaluativaListResponse, HttpStatus.OK);
-
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            GrupoEstudiantesEvalInfoResponse response = new GrupoEstudiantesEvalInfoResponse();
+            response.setEstudiantes(matriculaService.getEstudianteListConNotaActividadListByGrupo(codigoGrupo));
+            response.setProfesor(grupoService.getProfesorByGrupo(codigoGrupo));
+            response.setGrupo(grupoService.getGrupoByCodigoGrupo(codigoGrupo));
+            response.setEvaluaciones(actividadEvaluativaService.getActividadEvaluativaSimpleDTO(codigoGrupo));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
