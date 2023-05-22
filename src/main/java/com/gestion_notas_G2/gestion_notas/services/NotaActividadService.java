@@ -1,14 +1,13 @@
 package com.gestion_notas_G2.gestion_notas.services;
 
 import com.gestion_notas_G2.gestion_notas.dto.NotaActividadDTO;
+import com.gestion_notas_G2.gestion_notas.models.ActividadEvaluativa;
 import com.gestion_notas_G2.gestion_notas.models.Estudiante;
 import com.gestion_notas_G2.gestion_notas.models.NotaActividad;
 import com.gestion_notas_G2.gestion_notas.repositories.NotaActividadRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,8 +34,52 @@ public class NotaActividadService {
                     notaActividadDTO.setId(n.getId());
                     notaActividadDTO.setIdEstudiante(n.getEstudiante().getId());
                     notaActividadDTO.setIdActividadEvaluativa(n.getActividadEvaluativa().getId());
+                    notaActividadDTO.setCalificacion(n.getCalificacion());
                     return notaActividadDTO;
                 })
                 .collect(Collectors.toList());
+    }
+
+
+    /**
+     * Guarda una lista de notas de actividades en el sistema.
+     *
+     * @param notaActividadDTOList La lista de objetos NotaActividadDTO que representan las notas de actividades a guardar.
+     * @param codigiGrupo El código del grupo al que pertenecen las notas de actividades.
+     * @return Un mensaje indicando el resultado de la operación.
+     * @throws Exception Si ocurre un error al guardar los datos.
+     */
+    public String postNotaActividadList(List<NotaActividadDTO> notaActividadDTOList, Long codigiGrupo) throws Exception {
+        List<NotaActividad> notaActividades = this.notaActividadRepository.findNotaActividadByActividadEvaluativa_Grupo(codigiGrupo);
+        Set<String> combinacionesUnicas = new HashSet<>();
+
+        try {
+            List<NotaActividad> nuevaNotaActividadList = notaActividadDTOList.stream()
+                    .filter(notaActividadDTO -> {
+                        String combinacionUnica = notaActividadDTO.getIdEstudiante() + "-" + notaActividadDTO.getIdActividadEvaluativa();
+                        return combinacionesUnicas.add(combinacionUnica);
+                    })
+                    .map(notaActividadDTO -> {
+                        NotaActividad notaActividad = new NotaActividad();
+                        notaActividad.setId(notaActividadDTO.getId());
+                        notaActividad.setCalificacion(notaActividadDTO.getCalificacion());
+                        notaActividad.setEstudiante(new Estudiante(notaActividadDTO.getIdEstudiante()));
+                        notaActividad.setActividadEvaluativa(new ActividadEvaluativa(notaActividadDTO.getIdActividadEvaluativa()));
+                        return notaActividad;
+                    })
+                    .collect(Collectors.toList());
+
+            if (notaActividades.isEmpty()) {
+                this.notaActividadRepository.saveAll(nuevaNotaActividadList);
+            } else {
+                notaActividades.removeIf(nuevaNotaActividadList::contains);
+                this.notaActividadRepository.deleteAll(notaActividades);
+                this.notaActividadRepository.saveAll(nuevaNotaActividadList);
+            }
+
+            return "Las notas se han guardado correctamente.";
+        } catch (Exception e) {
+            throw new Exception("Ha ocurrido un error al guardar los datos: " + e.getMessage());
+        }
     }
 }

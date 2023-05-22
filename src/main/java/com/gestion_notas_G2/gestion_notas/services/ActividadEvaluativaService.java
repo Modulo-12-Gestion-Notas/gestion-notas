@@ -78,6 +78,13 @@ public class ActividadEvaluativaService {
         }
     }
 
+
+    /**
+     * Obtiene una lista de objetos ActividadEvaluativaSimpleDTO para un grupo dado.
+     *
+     * @param codigoGrupo El código del grupo para el cual se obtendrán las actividades evaluativas.
+     * @return Una lista de objetos ActividadEvaluativaSimpleDTO que representan las actividades evaluativas del grupo.
+     */
     public List<ActividadEvaluativaSimpleDTO> getActividadEvaluativaSimpleDTO(Long codigoGrupo){
         List<ActividadEvaluativa> actividadEvaluativaList = this.actividadEvaluativaRepository.findActividadEvaluativaByGrupo(codigoGrupo);
 

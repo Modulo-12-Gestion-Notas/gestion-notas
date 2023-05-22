@@ -38,6 +38,10 @@ public class ActividadEvaluativa {
         this.tieneNotas = false;
     }
 
+    public ActividadEvaluativa(Long idActividadEvaluativa) {
+        this.id = idActividadEvaluativa;
+    }
+
     public Long getId() {
         return id;
     }

@@ -12,4 +12,7 @@ import java.util.List;
 
 @Repository
 public interface NotaActividadRepository extends JpaRepository<NotaActividad, Long> {
+
+    @Query("SELECT n FROM NotaActividad n WHERE n.actividadEvaluativa.grupo.codigoGrupo = :codigoGrupo")
+    List<NotaActividad> findNotaActividadByActividadEvaluativa_Grupo(@Param("codigoGrupo") Long codigoGrupo);
 }

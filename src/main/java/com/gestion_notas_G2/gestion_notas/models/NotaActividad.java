@@ -1,6 +1,7 @@
 package com.gestion_notas_G2.gestion_notas.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "nota_actividad")
@@ -56,5 +57,13 @@ public class NotaActividad {
 
     public void setActividadEvaluativa(ActividadEvaluativa actividadEvaluativa) {
         this.actividadEvaluativa = actividadEvaluativa;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NotaActividad that = (NotaActividad) o;
+        return Objects.equals(id, that.id);
     }
 }
