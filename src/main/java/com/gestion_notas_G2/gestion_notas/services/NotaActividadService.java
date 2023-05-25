@@ -1,21 +1,26 @@
 package com.gestion_notas_G2.gestion_notas.services;
 
+import com.gestion_notas_G2.gestion_notas.dto.ActividadEvaluativaSimpleDTO;
 import com.gestion_notas_G2.gestion_notas.dto.NotaActividadDTO;
+import com.gestion_notas_G2.gestion_notas.dto.NotaActividadDetalladaDTO;
+import com.gestion_notas_G2.gestion_notas.dto.NotasByEstudianteOfGrupoDTO;
 import com.gestion_notas_G2.gestion_notas.models.ActividadEvaluativa;
 import com.gestion_notas_G2.gestion_notas.models.Estudiante;
 import com.gestion_notas_G2.gestion_notas.models.NotaActividad;
 import com.gestion_notas_G2.gestion_notas.repositories.NotaActividadRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class NotaActividadService {
     private NotaActividadRepository notaActividadRepository;
+    private ModelMapper modelMapper;
 
-    public NotaActividadService(NotaActividadRepository notaActividadRepository){
+    public NotaActividadService(NotaActividadRepository notaActividadRepository, ModelMapper modelMapper){
         this.notaActividadRepository = notaActividadRepository;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -38,6 +43,44 @@ public class NotaActividadService {
                     return notaActividadDTO;
                 })
                 .collect(Collectors.toList());
+    }
+
+
+    /**
+     * Obtiene las notas de un estudiante en un grupo específico.
+     *
+     * @param idEstudiante El identificador del estudiante.
+     * @param codigoGrupo El código del grupo.
+     * @return Un objeto NotasByEstudianteOfGrupoDTO que contiene las notas del estudiante en el grupo.
+     */
+    public NotasByEstudianteOfGrupoDTO getNotasByEstudianteOfGrupo(Long idEstudiante, Long codigoGrupo) {
+        NotasByEstudianteOfGrupoDTO notasByEstudianteOfGrupoDTO = new NotasByEstudianteOfGrupoDTO();
+        List<NotaActividadDetalladaDTO> notaActividadDetalladaDTOList = new ArrayList<>();
+        List<NotaActividad> notaActividadList = this.notaActividadRepository.findNotaActividadByEstudianteAndGrupo(codigoGrupo,idEstudiante);
+        float notaAcumulada = 0F;
+        int porcentajeEvaluado = 0;
+
+        for (NotaActividad n : notaActividadList) {
+
+            if (Objects.equals(n.getActividadEvaluativa().getGrupo().getCodigoGrupo(), codigoGrupo)) {
+                NotaActividadDetalladaDTO notaActividadDetalladaDTO = new NotaActividadDetalladaDTO();
+                notaActividadDetalladaDTO.setId(n.getId());
+                notaActividadDetalladaDTO.setEvaluacion(modelMapper.map(n.getActividadEvaluativa(), ActividadEvaluativaSimpleDTO.class));
+                notaActividadDetalladaDTO.setCalificacion(n.getCalificacion());
+
+                notaActividadDetalladaDTOList.add(notaActividadDetalladaDTO);
+
+                float valorNota = (float) (n.getCalificacion() * (float) n.getActividadEvaluativa().getPorcentaje() / 100);
+                notaAcumulada += (valorNota);
+                porcentajeEvaluado += n.getActividadEvaluativa().getPorcentaje();
+            }
+        }
+
+        notasByEstudianteOfGrupoDTO.setCalificaciones(notaActividadDetalladaDTOList);
+        notasByEstudianteOfGrupoDTO.setNotaAcumulada(notaAcumulada);
+        notasByEstudianteOfGrupoDTO.setPorcentajeEvaluado(porcentajeEvaluado);
+
+        return notasByEstudianteOfGrupoDTO;
     }
 
 

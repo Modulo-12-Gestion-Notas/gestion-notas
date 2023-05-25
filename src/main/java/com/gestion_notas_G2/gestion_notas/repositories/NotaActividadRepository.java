@@ -15,4 +15,7 @@ public interface NotaActividadRepository extends JpaRepository<NotaActividad, Lo
 
     @Query("SELECT n FROM NotaActividad n WHERE n.actividadEvaluativa.grupo.codigoGrupo = :codigoGrupo")
     List<NotaActividad> findNotaActividadByActividadEvaluativa_Grupo(@Param("codigoGrupo") Long codigoGrupo);
+
+    @Query("SELECT n FROM NotaActividad n WHERE n.actividadEvaluativa.grupo.codigoGrupo = :codigoGrupo AND n.estudiante.id = :idEstudiante")
+    List<NotaActividad> findNotaActividadByEstudianteAndGrupo(@Param("codigoGrupo") Long codigoGrupo, @Param("idEstudiante") Long idEstudiante);
 }
