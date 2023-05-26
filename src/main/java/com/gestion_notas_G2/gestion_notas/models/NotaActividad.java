@@ -11,7 +11,7 @@ public class NotaActividad {
     @Column(nullable = false, updatable = false)
     private Long id;
     @Column
-    private double calificacion;
+    private Double calificacion;
     @ManyToOne
     private Estudiante estudiante;
     @ManyToOne
@@ -20,7 +20,7 @@ public class NotaActividad {
     public NotaActividad() {
     }
 
-    public NotaActividad(Long id, double calificacion, Estudiante estudiante, ActividadEvaluativa actividadEvaluativa) {
+    public NotaActividad(Long id, Double calificacion, Estudiante estudiante, ActividadEvaluativa actividadEvaluativa) {
         this.id = id;
         this.calificacion = calificacion;
         this.estudiante = estudiante;
@@ -35,11 +35,11 @@ public class NotaActividad {
         this.id = id;
     }
 
-    public double getCalificacion() {
+    public Double getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(double calificacion) {
+    public void setCalificacion(Double calificacion) {
         this.calificacion = calificacion;
     }
 

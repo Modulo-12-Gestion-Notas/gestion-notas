@@ -99,8 +99,11 @@ public class NotaActividadService {
         try {
             List<NotaActividad> nuevaNotaActividadList = notaActividadDTOList.stream()
                     .filter(notaActividadDTO -> {
-                        String combinacionUnica = notaActividadDTO.getIdEstudiante() + "-" + notaActividadDTO.getIdActividadEvaluativa();
-                        return combinacionesUnicas.add(combinacionUnica);
+                        if(notaActividadDTO.getCalificacion() != null){
+                            String combinacionUnica = notaActividadDTO.getIdEstudiante() + "-" + notaActividadDTO.getIdActividadEvaluativa();
+                            return combinacionesUnicas.add(combinacionUnica);
+                        }
+                        return false;
                     })
                     .map(notaActividadDTO -> {
                         NotaActividad notaActividad = new NotaActividad();

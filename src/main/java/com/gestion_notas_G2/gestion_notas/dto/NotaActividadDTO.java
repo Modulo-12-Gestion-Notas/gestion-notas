@@ -4,7 +4,7 @@ import lombok.Data;
 @Data
 public class NotaActividadDTO {
     private Long id;
-    private double calificacion;
+    private Double calificacion;
     private Long idEstudiante;
     private Long idActividadEvaluativa;
 }
