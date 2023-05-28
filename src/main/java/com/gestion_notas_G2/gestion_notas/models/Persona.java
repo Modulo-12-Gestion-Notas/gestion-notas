@@ -43,6 +43,10 @@ public class Persona {
         this.usuario = usuario;
     }
 
+    public Persona(Long id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
     }

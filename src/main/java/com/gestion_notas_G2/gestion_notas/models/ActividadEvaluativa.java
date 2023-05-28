@@ -19,7 +19,7 @@ public class ActividadEvaluativa {
     private int porcentaje;
     @ManyToOne
     private Grupo grupo;
-    @OneToMany(mappedBy = "actividadEvaluativa")
+    @OneToMany(mappedBy = "actividadEvaluativa", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<NotaActividad> notaActividades;
 
@@ -36,6 +36,10 @@ public class ActividadEvaluativa {
         this.grupo = grupo;
         this.notaActividades = notaActividades;
         this.tieneNotas = false;
+    }
+
+    public ActividadEvaluativa(Long idActividadEvaluativa) {
+        this.id = idActividadEvaluativa;
     }
 
     public Long getId() {

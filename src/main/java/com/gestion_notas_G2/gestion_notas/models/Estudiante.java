@@ -39,6 +39,10 @@ public class Estudiante extends Persona {
         this.seccional = seccional;
     }
 
+    public Estudiante(Long idEstudiante) {
+        super(idEstudiante);
+    }
+
     public String getProgramaAcademico() {
         return programaAcademico;
     }

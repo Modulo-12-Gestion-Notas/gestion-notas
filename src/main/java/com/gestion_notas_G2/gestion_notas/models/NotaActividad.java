@@ -1,6 +1,7 @@
 package com.gestion_notas_G2.gestion_notas.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "nota_actividad")
@@ -10,7 +11,7 @@ public class NotaActividad {
     @Column(nullable = false, updatable = false)
     private Long id;
     @Column
-    private double calificacion;
+    private Double calificacion;
     @ManyToOne
     private Estudiante estudiante;
     @ManyToOne
@@ -19,7 +20,7 @@ public class NotaActividad {
     public NotaActividad() {
     }
 
-    public NotaActividad(Long id, double calificacion, Estudiante estudiante, ActividadEvaluativa actividadEvaluativa) {
+    public NotaActividad(Long id, Double calificacion, Estudiante estudiante, ActividadEvaluativa actividadEvaluativa) {
         this.id = id;
         this.calificacion = calificacion;
         this.estudiante = estudiante;
@@ -34,11 +35,11 @@ public class NotaActividad {
         this.id = id;
     }
 
-    public double getCalificacion() {
+    public Double getCalificacion() {
         return calificacion;
     }
 
-    public void setCalificacion(double calificacion) {
+    public void setCalificacion(Double calificacion) {
         this.calificacion = calificacion;
     }
 
@@ -56,5 +57,13 @@ public class NotaActividad {
 
     public void setActividadEvaluativa(ActividadEvaluativa actividadEvaluativa) {
         this.actividadEvaluativa = actividadEvaluativa;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NotaActividad that = (NotaActividad) o;
+        return Objects.equals(id, that.id);
     }
 }
