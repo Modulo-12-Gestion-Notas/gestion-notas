@@ -35,4 +35,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Modulo-12-Gestion-Notas_gestion-notas-api
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Modulo-12-Gestion-Notas_gestion-notas-api
+      - name: Save JaCoCo reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: JacocoReports
+          path: target/site/jacoco/

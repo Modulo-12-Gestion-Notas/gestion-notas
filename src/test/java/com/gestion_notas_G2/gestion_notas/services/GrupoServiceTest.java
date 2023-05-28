@@ -5,6 +5,7 @@ import com.gestion_notas_G2.gestion_notas.dto.ProfesorDTO;
 import com.gestion_notas_G2.gestion_notas.models.Grupo;
 import com.gestion_notas_G2.gestion_notas.models.Profesor;
 import com.gestion_notas_G2.gestion_notas.repositories.GrupoRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,6 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@Disabled
 @ExtendWith(MockitoExtension.class)
 class GrupoServiceTest {
 

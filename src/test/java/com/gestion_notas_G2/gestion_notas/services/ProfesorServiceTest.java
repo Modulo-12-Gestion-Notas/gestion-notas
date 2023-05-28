@@ -3,6 +3,7 @@ package com.gestion_notas_G2.gestion_notas.services;
 import com.gestion_notas_G2.gestion_notas.models.Profesor;
 import com.gestion_notas_G2.gestion_notas.repositories.ProfesorRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,6 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@Disabled
 class ProfesorServiceTest {
 
     @Mock

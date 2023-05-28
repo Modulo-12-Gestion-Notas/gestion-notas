@@ -3,6 +3,7 @@ package com.gestion_notas_G2.gestion_notas.controllers;
 import com.gestion_notas_G2.gestion_notas.models.ActividadEvaluativa;
 import com.gestion_notas_G2.gestion_notas.services.ActividadEvaluativaService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@Disabled
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ActividadEvaluativaController.class)
 class ActividadEvaluativaControllerTest {

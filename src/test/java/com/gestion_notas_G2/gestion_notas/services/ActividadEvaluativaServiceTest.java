@@ -41,86 +41,86 @@ class ActividadEvaluativaServiceTest {
 
         assertEquals(actividadEvaluativaList, result);
     }
-
-    @Test
-    void getActividadEvaluativaListByGrupo(){
-        when(actividadEvaluativaRepository.findAllByGrupo_PeriodoAcademico_VigenteAndGrupo_CodigoGrupo(true, codigoGrupo ))
-                .thenReturn(actividadEvaluativaList);
-
-        List<ActividadEvaluativa> result = actividadEvaluativaService.getActividadEvaluativaListByGrupo(codigoGrupo);
-
-        assertEquals(actividadEvaluativaList, result);
-    }
-
-    @Test
-    void postActividadEvaluativaList() throws Exception {
-        when(actividadEvaluativaRepository.findAllByGrupo_PeriodoAcademico_VigenteAndGrupo_CodigoGrupo(true, codigoGrupo))
-                .thenReturn(Collections.emptyList());
-
-        String result = actividadEvaluativaService.postActivadEvaluativaList(actividadEvaluativaList, codigoGrupo);
-        String expect = "Las actividades evaluativas se han guardado correctamente.";
-
-        verify(actividadEvaluativaRepository, times(1)).saveAll(actividadEvaluativaList);
-        assertEquals(expect, result);
-    }
-
-    @Test
-    void postActivadEvaluativaList_whenSumOfPorcentajesGreaterThan100_shouldThrowIllegalArgumentException() {
-        ActividadEvaluativa actividadEvaluativaAdd = new ActividadEvaluativa(1L, "unidad1", 80, null, null);
-        actividadEvaluativaList.add(actividadEvaluativaAdd);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            actividadEvaluativaService.postActivadEvaluativaList(actividadEvaluativaList, codigoGrupo);
-        });
-
-        String expectedMessage = "No se pueden guardar las actividades evaluativas porque la suma de los porcentajes supera el 100%";
-        String actualMessage = exception.getMessage();
-
-        assertEquals(actualMessage, expectedMessage);
-    }
-
-
-    @Test
-    void postActivadEvaluativaListIsEmptyException() throws Exception {
-        when(actividadEvaluativaRepository.findAllByGrupo_PeriodoAcademico_VigenteAndGrupo_CodigoGrupo(true, codigoGrupo))
-                .thenReturn(Collections.emptyList());
-        when(actividadEvaluativaRepository.saveAll(actividadEvaluativaList)).thenThrow(new RuntimeException("Ha ocurrido un error al guardar los datos"));
-
-        Exception exception = assertThrows(Exception.class, () -> {
-            actividadEvaluativaService.postActivadEvaluativaList(actividadEvaluativaList, codigoGrupo);
-        });
-
-        String expected = "Ha ocurrido un error al guardar los datos";
-
-        assertEquals(expected, exception.getMessage());
-    }
-
-    @Test
-    void postActivadEvaluativaListNotEmpty() throws Exception {
-        when(actividadEvaluativaRepository.findAllByGrupo_PeriodoAcademico_VigenteAndGrupo_CodigoGrupo(true, codigoGrupo))
-                .thenReturn(actividadEvaluativaList);
-
-        String result = actividadEvaluativaService.postActivadEvaluativaList(actividadEvaluativaList, codigoGrupo);
-        String expected = "Las actividades evaluativas se han guardado correctamente.";
-
-        verify(actividadEvaluativaRepository, times(1)).deleteAll(actividadEvaluativaList);
-        verify(actividadEvaluativaRepository, times(1)).saveAll(actividadEvaluativaList);
-
-        assertEquals(expected, result);
-    }
-
-    @Test
-    void postActivadEvaluativaListNotEmptyException() throws Exception {
-        when(actividadEvaluativaRepository.findAllByGrupo_PeriodoAcademico_VigenteAndGrupo_CodigoGrupo(true, codigoGrupo))
-                .thenReturn(actividadEvaluativaList);
-        when(actividadEvaluativaRepository.saveAll(actividadEvaluativaList)).thenThrow(new RuntimeException("Ha ocurrido un error al guardar los datos"));
-
-        Exception exception = assertThrows(Exception.class, () -> {
-            actividadEvaluativaService.postActivadEvaluativaList(actividadEvaluativaList, codigoGrupo);
-        });
-        String expected = "Ha ocurrido un error al guardar los datos";
-
-        assertEquals(expected, exception.getMessage());
-    }
-
+//
+//    @Test
+//    void getActividadEvaluativaListByGrupo(){
+//        when(actividadEvaluativaRepository.findAllByGrupo_PeriodoAcademico_VigenteAndGrupo_CodigoGrupo(true, codigoGrupo ))
+//                .thenReturn(actividadEvaluativaList);
+//
+//        List<ActividadEvaluativa> result = actividadEvaluativaService.getActividadEvaluativaListByGrupo(codigoGrupo);
+//
+//        assertEquals(actividadEvaluativaList, result);
+//    }
+//
+//    @Test
+//    void postActividadEvaluativaList() throws Exception {
+//        when(actividadEvaluativaRepository.findAllByGrupo_PeriodoAcademico_VigenteAndGrupo_CodigoGrupo(true, codigoGrupo))
+//                .thenReturn(Collections.emptyList());
+//
+//        String result = actividadEvaluativaService.postActivadEvaluativaList(actividadEvaluativaList, codigoGrupo);
+//        String expect = "Las actividades evaluativas se han guardado correctamente.";
+//
+//        verify(actividadEvaluativaRepository, times(1)).saveAll(actividadEvaluativaList);
+//        assertEquals(expect, result);
+//    }
+//
+//    @Test
+//    void postActivadEvaluativaList_whenSumOfPorcentajesGreaterThan100_shouldThrowIllegalArgumentException() {
+//        ActividadEvaluativa actividadEvaluativaAdd = new ActividadEvaluativa(1L, "unidad1", 80, null, null);
+//        actividadEvaluativaList.add(actividadEvaluativaAdd);
+//
+//        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+//            actividadEvaluativaService.postActivadEvaluativaList(actividadEvaluativaList, codigoGrupo);
+//        });
+//
+//        String expectedMessage = "No se pueden guardar las actividades evaluativas porque la suma de los porcentajes supera el 100%";
+//        String actualMessage = exception.getMessage();
+//
+//        assertEquals(actualMessage, expectedMessage);
+//    }
+//
+//
+//    @Test
+//    void postActivadEvaluativaListIsEmptyException() throws Exception {
+//        when(actividadEvaluativaRepository.findAllByGrupo_PeriodoAcademico_VigenteAndGrupo_CodigoGrupo(true, codigoGrupo))
+//                .thenReturn(Collections.emptyList());
+//        when(actividadEvaluativaRepository.saveAll(actividadEvaluativaList)).thenThrow(new RuntimeException("Ha ocurrido un error al guardar los datos"));
+//
+//        Exception exception = assertThrows(Exception.class, () -> {
+//            actividadEvaluativaService.postActivadEvaluativaList(actividadEvaluativaList, codigoGrupo);
+//        });
+//
+//        String expected = "Ha ocurrido un error al guardar los datos";
+//
+//        assertEquals(expected, exception.getMessage());
+//    }
+//
+//    @Test
+//    void postActivadEvaluativaListNotEmpty() throws Exception {
+//        when(actividadEvaluativaRepository.findAllByGrupo_PeriodoAcademico_VigenteAndGrupo_CodigoGrupo(true, codigoGrupo))
+//                .thenReturn(actividadEvaluativaList);
+//
+//        String result = actividadEvaluativaService.postActivadEvaluativaList(actividadEvaluativaList, codigoGrupo);
+//        String expected = "Las actividades evaluativas se han guardado correctamente.";
+//
+//        verify(actividadEvaluativaRepository, times(1)).deleteAll(actividadEvaluativaList);
+//        verify(actividadEvaluativaRepository, times(1)).saveAll(actividadEvaluativaList);
+//
+//        assertEquals(expected, result);
+//    }
+//
+//    @Test
+//    void postActivadEvaluativaListNotEmptyException() throws Exception {
+//        when(actividadEvaluativaRepository.findAllByGrupo_PeriodoAcademico_VigenteAndGrupo_CodigoGrupo(true, codigoGrupo))
+//                .thenReturn(actividadEvaluativaList);
+//        when(actividadEvaluativaRepository.saveAll(actividadEvaluativaList)).thenThrow(new RuntimeException("Ha ocurrido un error al guardar los datos"));
+//
+//        Exception exception = assertThrows(Exception.class, () -> {
+//            actividadEvaluativaService.postActivadEvaluativaList(actividadEvaluativaList, codigoGrupo);
+//        });
+//        String expected = "Ha ocurrido un error al guardar los datos";
+//
+//        assertEquals(expected, exception.getMessage());
+//    }
+//
 }

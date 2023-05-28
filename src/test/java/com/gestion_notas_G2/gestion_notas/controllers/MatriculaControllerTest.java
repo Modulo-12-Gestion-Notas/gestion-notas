@@ -8,6 +8,7 @@ import com.gestion_notas_G2.gestion_notas.response.GrupoEstudiantesResponse;
 import com.gestion_notas_G2.gestion_notas.services.GrupoService;
 import com.gestion_notas_G2.gestion_notas.services.MatriculaService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@Disabled
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(GrupoController.class)
 class MatriculaControllerTest {

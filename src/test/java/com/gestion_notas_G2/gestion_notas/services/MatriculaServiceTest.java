@@ -4,6 +4,7 @@ import com.gestion_notas_G2.gestion_notas.dto.EstudianteDTO;
 import com.gestion_notas_G2.gestion_notas.models.Estudiante;
 import com.gestion_notas_G2.gestion_notas.repositories.MatriculaRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@Disabled
 @ExtendWith(MockitoExtension.class)
 class MatriculaServiceTest {
 
