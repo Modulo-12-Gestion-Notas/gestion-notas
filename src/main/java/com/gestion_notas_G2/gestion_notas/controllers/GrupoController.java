@@ -1,13 +1,12 @@
 package com.gestion_notas_G2.gestion_notas.controllers;
 
 import com.gestion_notas_G2.gestion_notas.models.Grupo;
-import com.gestion_notas_G2.gestion_notas.services.GrupoService;
+import Interfaces.IGrupoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,11 +15,11 @@ import java.util.List;
 @RestController
 public class GrupoController {
 
-    private GrupoService grupoService;
-    public GrupoController(GrupoService grupoService){
-       this.grupoService = grupoService;
-    }
+    private IGrupoService grupoService;
 
+    public GrupoController(IGrupoService grupoService) {
+        this.grupoService = grupoService;
+    }
 
     /**
      * Obtiene la lista de grupos asignados a un profesor.
@@ -29,21 +28,19 @@ public class GrupoController {
      * @return La lista de grupos asignados al profesor.
      */
     @GetMapping("/api/{idProfesor}/grupos/")
-    @ApiOperation(value = "Obtiene la lista de grupos asignados a un profesor",
-            response = Grupo.class, responseContainer = "List")
+    @ApiOperation(value = "Obtiene la lista de grupos asignados a un profesor", response = Grupo.class, responseContainer = "List")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = Grupo.class, responseContainer = "List"),
             @ApiResponse(code = 500, message = "Error interno del servidor")
     })
-    public ResponseEntity<Object> getGruposByProfesor(@PathVariable Long idProfesor){
+    public ResponseEntity<Object> getGruposByProfesor(@PathVariable Long idProfesor) {
         try {
             List<Grupo> grupos = grupoService.getGruposByProfesor(idProfesor);
             return new ResponseEntity<>(grupos, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
     /**
      * Maneja una excepción de tipo IllegalArgumentException.
